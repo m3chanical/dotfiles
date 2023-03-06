@@ -1,0 +1,13 @@
+# vim:syntax=sh:
+
+install_symlink git/gitconfig        $HOME/.gitconfig
+install_symlink git/gitignore_global $HOME/.gitignore_global
+
+#if [ can_install ]
+#then
+#    install-package git-email
+#    install-package libgnome-keyring-dev
+#    pushd /usr/share/doc/git/contrib/credential/gnome-keyring
+#    sudo make
+#    popd
+#fi

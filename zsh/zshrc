@@ -1,0 +1,17 @@
+autoload compinit
+compinit -d $HOME/.zsh/zcompdump
+
+# use vim mode
+bindkey -v
+
+source $HOME/.zsh/modules/modal_prompt.zsh
+source $HOME/.zsh/modules/completion.zsh
+source $HOME/.zsh/modules/package_suggestions.zsh
+source $HOME/.zsh/modules/dir_stack.zsh
+source $HOME/.zsh/modules/git.zsh
+source $HOME/.zsh/modules/toggle_fgproc.zsh
+
+for config in $HOME/.zsh/zshrc.d/*.zsh
+do
+    source $config
+done

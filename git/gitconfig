@@ -1,0 +1,19 @@
+[user]
+    name = shriek 
+    email = sinbeard@protonmail.com
+[push]
+    default = simple
+[pull]
+    rebase = false
+[alias]
+    b = branch -v
+    se = send-email --thread --chain-reply-to
+    sea = send-email --thread --annotate --chain-reply-to
+    co = checkout
+    slog = log --oneline
+    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    stat = status -sb
+    files = show --name-status
+[core]
+    excludesfile = ~/.gitignore_global
+    editor = vim
