@@ -1,0 +1,11 @@
+# vim:syntax=sh:
+
+mkdir -p $HOME/.config/i3
+mkdir -p $HOME/.config/polybar
+mkdir -p $HOME/.config/nvim
+cp os-config/config.i3 $HOME/.config/i3/config
+cp os-config/config.polybar $HOME/.config/polybar/config
+cp os-config/init.vim $HOME/.config/nvim
+
+sudo cp os-config/45-backlight.rules /etc/udev/rules.d
+sudo udevadm control --reload-rules

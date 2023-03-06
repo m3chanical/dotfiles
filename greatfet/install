@@ -1,0 +1,5 @@
+# vim:syntax=sh:
+
+pip3 install --upgrade --user greatfet
+sudo cp greatfet/54-greatfet.rules /etc/udev/rules.d
+sudo udevadm control --reload-rules

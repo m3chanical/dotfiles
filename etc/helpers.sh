@@ -61,7 +61,7 @@ function install_package {
     dpkg-query -s $PKG > /dev/null 2>&1
     if [ $? -ne 0 ]; then
         if [ can_install ]; then
-            sudo apt-get install $PKG
+            sudo apt -q=2 -y install $PKG
             if [ $? -ne 0 ]; then
                 log_error "Failed to install package: $PKG"
             fi

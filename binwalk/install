@@ -1,0 +1,20 @@
+# vim:syntax=sh:
+
+binwalk_install="$HOME/binwalk"
+
+if [ ! -d "$binwalk_install" ]
+then
+  git clone https://github.com/ReFirmLabs/binwalk $binwalk_install
+fi
+
+pushd $binwalk_install
+git reset --hard # yeet all the changes and start fresh
+git pull
+sed -i "s/\\bqtbase5-dev \\b//g" deps.sh
+sed -i '/git clone.*devttys0\/sasquatch/ a\    wget https://github.com/devttys0/sasquatch/pull/51.patch && patch -p1 -d sasquatch < 51.patch' deps.sh
+sed -i 's/^install_jefferson/#&/' deps.sh
+sudo python -mpip install jefferson
+sudo ./deps.sh --yes
+sudo python3 ./setup.py install
+popd
+

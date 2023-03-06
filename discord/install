@@ -1,0 +1,16 @@
+# vim:syntax=sh:
+PKG="discord.deb"
+URL="https://discord.com/api/download?platform=linux&format=deb"
+
+dpkg-query -s $PKG > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+  echo "[*] Installing Discord from .deb..."
+  wget -O "discord/$PKG" "$URL"
+  sudo dpkg -i "discord/$PKG"
+  sudo apt -f install
+  echo "[*] Discord install complete!"
+else
+  echo "[*] Discord already installed"
+fi
+
+rm "discord/$PKG" > /dev/null 2>&1

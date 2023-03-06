@@ -1,0 +1,4 @@
+# vim:syntax=sh:
+install_dir="$HOME/firmwalker"
+
+[ ! -d $install_dir/.git ] && git clone https://github.com/craigz28/firmwalker.git $install_dir

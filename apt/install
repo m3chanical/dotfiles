@@ -1,0 +1,14 @@
+# vim:syntax=sh:
+
+package_file="apt/user_installed_packages.txt"
+
+if [ ! -r "$package_file" ]; then
+  echo "Error: Package file not found or not readable: $package_file"
+  exit 1
+fi
+
+while read -r package
+do
+  echo "[*] Installing $package"
+  install_package $package
+done < "$package_file"
