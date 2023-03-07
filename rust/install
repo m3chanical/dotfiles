@@ -1,0 +1,9 @@
+# vim:syntax=sh:
+
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+$HOME/.cargo/bin/rustc --version > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+	echo "Rust Install Failed T_T" 
+	[ -d $HOME/.cargo/bin ] && echo "...either that or PATH isn't configued to include it."
+fi

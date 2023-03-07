@@ -1,0 +1,41 @@
+# vim:syntax=sh:
+#
+
+# dependencies
+install_package git
+install_package make
+install_package pip 
+install_package python 
+install_package npm 
+install_package nodejs
+
+rustc --version > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+	echo "[*] Need to install Rust or add it to path."
+	[ -f $HOME/.cargo/bin/rustc ] && echo "Rust installed but not in path." && exit
+	[ ! -f rust/install ] && exit 1
+	source rust/install
+fi
+
+URL=$(curl -s https://api.github.com/repos/neovim/neovim/releases/latest \
+	| grep "browser_download_url.*deb" \
+	| grep -v "sha256sum" \
+	| cut -d '"' -f 4)
+DEB=$(basename $URL)
+
+sudo dpkg -P neovim > /dev/null 2>&1
+sudo dpkg -P neovim-runtime > /dev/null 2>&1
+[ ! -f $DEB ] && wget $URL # TODO: what if this fails?
+
+sudo dpkg -i $DEB
+rm $DEB
+
+if [ ! -d "$HOME/.config/nvim" ]; then
+	mkdir $HOME/.config/nvim
+fi
+
+# lunar vim
+LV_BRANCH='release-1.2/neovim-0.8' bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/fc6873809934917b470bff1b072171879899a36b/utils/installer/install.sh) --yes --overwrite
+# install symlinks. 
+# TODO: maybe like, check?
+sudo ln -s /bin/vim .local/bin/lvim # BYE VIM
