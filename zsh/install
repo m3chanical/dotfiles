@@ -1,12 +1,19 @@
 # vim:syntax=sh:
 
-install_symlink zsh/zshrc $HOME/.zshrc
+URL="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+OMZ="zsh/install.sh"
 
-if [ ! -d "$HOME/.zsh" ]; then
-    mkdir $HOME/.zsh
-fi
+wget -O "$OMZ" "$URL"
+sed -i '/^\s*exec zsh -l$/d' $OMZ
 
-# this directory stores completion caches per host
-if [ ! -d "$HOME/.zsh/cache" ]; then
-    mkdir $HOME/.zsh/cache
-fi
+chmod +x $OMZ
+sh -c $OMZ
+rm -rf $OMZ
+
+[ ! -d $HOME/.fzf ] && git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
+/bin/bash $HOME/.fzf/install
+
+# TODO: consider setting up a ZSH_CUSTOM folder before doing this. Might be smarter?
+
+sed -i 's/^plugins=(git)$/plugins=(git fzf copyfile sudo dirhistory git)/' $HOME/.zshrc 
+sed -i 's/^ZSH_THEME="robbyrussell"$/ZSH_THEME="crcandy"/' $HOME/.zshrc
