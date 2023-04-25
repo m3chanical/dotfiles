@@ -4,31 +4,25 @@
 temp=$(mktemp -d)
 trap 'rm -rf "$temp"' EXIT
 
-# Function to download files
-download_files() {
-    wget -nv -P "$HOME" "$@"
-}
+sudo pacman -S doxygen
+sudo pacman -S help2man
+sudo pacman -S libusb
+sudo pacman -S mbedtls
+sudo pacman -S boost
+sudo pacman -S lksctp-tools
+sudo pacman -S libconfig
 
-
-# Install required apt packages
-install_package libusb-1.0-0-dev
-install_package doxygen
-install_package help2man
-
-# Download bladeRF firmware and utilities
-# TODO: point bladerf config to these:
-wget -nv -P $HOME https://www.nuand.com/fpga/hostedxA9-latest.rbf
-wget -nv -P $HOME https://www.nuand.com/fx3/bladeRF_fw_latest.img
+wget -nv -O $HOME/hostedxA9-latest.rbf https://www.nuand.com/fpga/hostedxA9-latest.rbf
+wget -nv -O $HOME/bladeRF_fw_latest.img https://www.nuand.com/fx3/bladeRF_fw_latest.img
 
 # Build and install bladeRF from source
 cd "$temp"
 git clone https://github.com/Nuand/bladeRF.git
 cd bladeRF/host
-sed -i '/^cmake_policy(SET CMP0115 OLD)$/d' libraries/libbladeRF/CMakeLists.txt
 mkdir -p build
 cd build
 cmake -DBUILD_DOCUMENTATION=ON -DENABLE_BACKEND_LIBUSB=ON ../
-make
+make -j$(nproc)
 sudo make install
 sudo ldconfig
 
@@ -39,9 +33,11 @@ cd srsRAN_4G
 mkdir build
 cd build
 cmake ../
-make
-make test
+make -j$(nproc)
+sudo make install
+sudo ldconfig
 
 echo "Executing default 4G config from $PWD..."
 sudo $temp/srsRAN_4G/build/srsran_install_configs.sh user
+$temp/srsRAN_4G/build/srsran_install_configs.sh user
 echo "...done."
